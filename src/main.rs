@@ -14,5 +14,5 @@ fn add(a: u32, b: u32) -> u32 {
 
 #[test]
 fn test_add() {
-    assert_eq!(3, add(1, 2));
+    assert_eq!(3, add(1, 0));
 }
