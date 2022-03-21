@@ -13,8 +13,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: xd009642/tarpaulin:develop-nightly
-      options: --security-opt seccomp=unconfined
+      image: xd009642/tarpaulin:latest
+      # options: --security-opt seccomp=unconfined
     steps:
     - uses: actions/checkout@v2
     - name: Build
