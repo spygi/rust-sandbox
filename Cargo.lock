@@ -62,7 +62,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "rust-sandbox"
+name = "rust_sandbox"
 version = "0.1.0"
 dependencies = [
  "rand",
