@@ -1,6 +1,5 @@
 use rand::prelude::*;
 
-#[cfg(not(tarpaulin_include))]
 fn main() {
     println!("From main");
     let mut rng = rand::thread_rng();

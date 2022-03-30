@@ -1,28 +1,36 @@
-Sandbox rust project to test tooling.
+Sandbox rust project to test Rust tooling:
+
+- [Dev environment](#dev-environment)
+- [Testing](#testing)
+- [CI/CD](#cicd)
+- [Test Coverage](#test-coverage)
 
 # Dev environment
 Using dev containers in VS Code: 
 - Debugging: VSLLDB VS Code extension
+- Code analysis: [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=matklad.rust-analyzer) extension
 - Linting (clippy) & formatting (rustfmt) on save
 ```
 "editor.formatOnSave": true, 
     "[rust]": { 
         "editor.defaultFormatter": "matklad.rust-analyzer"
     },
-```        
+```
+Both should be installed locally (`rustup component list`) and could be invoked manually with `cargo clippy`
+or `rustfmt file_name` respectively.
 
 # Testing
-- By default cargo test captures output of successful tests, to show it use `cargo test --
---show-output` or `-- --nocapture`
 - Tests (all types) are denoted with the `#[test]` attribute.
 - Run all tests with `cargo test`
+- By default cargo test captures output of successful tests, to show it use `cargo test --
+--show-output` or `-- --nocapture`
 
 ## Unit tests
 - Usually in the same file as the code
 - Can access private methods with `use super::*;`
 - Use #[cfg(test)] to not have the compiled unless under test
 - Run only library tests: `cargo test --lib`
-  - Also runs adder component's tests
+  - Also runs sub-component's tests
 - Run only binary tests (main.rs): `cargo test --bin rust_sandbox` where rust_sandbox is the name of the binary
 
 ## Integration tests
@@ -32,11 +40,9 @@ Using dev containers in VS Code:
   - If you want to test another (sub)component, it has to be referenced by the lib.rs e.g. `pub mod
     component_name;` and then it can be accessed from the integration tests with
     `crate_name::component_name`
-- Each file there is a different crate which [means multiple executables](https://mozilla.github.io/application-services/book/design/test-faster.html#appendix-how-to-avoid-redundant-compiles-for-benchmarks-and-integration-tests) are created: one for each file.
+- Each file in the tests/ folder is a different crate which means [multiple executables are created](https://mozilla.github.io/application-services/book/design/test-faster.html#appendix-how-to-avoid-redundant-compiles-for-benchmarks-and-integration-tests): one for each file.
   - Instead organize them in directories with a main.rs -> these directories are discovered by
-    default
-    ([tip](https://www.reddit.com/r/rust/comments/gq9rmq/comment/frsxbx3/?utm_source=share&utm_medium=web2x&context=3))
-    If you do this however and you do a cargo test it will run the tests twice.
+    default. If you do this however and you do a cargo test it will run the tests twice.
 - In order to run only integration tests, create a test target [like
   here](https://joshleeb.com/blog/rust-integration-tests/) and use with `cargo test --test integration` 
 - Some pointers in creating a test harness [with setup and shutdown
@@ -48,4 +54,31 @@ Using dev containers in VS Code:
 - See a usage in practice in [the bat
   repo](https://github.com/sharkdp/bat/blob/master/tests/integration_tests.rs)
 
+# CI/CD
+- Github Actions
+  - [Rust tools
+    installed by default](https://github.com/actions/virtual-environments/blob/ubuntu20/20220227.1/images/linux/Ubuntu2004-Readme.md#rust-tools)
+    on Ubuntu latest GitHub workers
+  - [Action-rs repo](https://github.com/actions-rs) with various (unofficial) Rust actions
+  - [Rust itself uses Github
+    Actions](https://blog.rust-lang.org/inside-rust/2020/07/23/rust-ci-is-moving-to-github-actions.html)
   
+[Other options](https://doc.rust-lang.org/cargo/guide/continuous-integration.html) include Azure
+DevOps, Travis etc.  
+
+# Test coverage
+## Tarpaulin
+A cargo install tool / [Rust package](https://crates.io/crates/cargo-tarpaulin). Version 0.20, actively developed, 70 contributors, monthly releases.
+Run locally with `cargo tarpaulin` 
+
+CI/CD integration: [Github action](https://github.com/marketplace/actions/rust-tarpaulin) or
+[official Docker
+image](https://github.com/xd009642/tarpaulin#github-actions).
+
+[Features](https://github.com/xd009642/tarpaulin#features):  
+- Ignore specific methods from coverage with `#[cfg(not(tarpaulin_include))]`
+- Ignore test code (unit and integration) `--ignore-tests` flag
+
+Limitations, see [roadmap](https://github.com/xd009642/tarpaulin#roadmap):  
+- Only supports x86_64 processors running Linux
+- No branch and condition coverage

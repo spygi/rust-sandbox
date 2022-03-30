@@ -15,6 +15,7 @@ pub fn add(a: i32, b: i32) -> i32 {
 }
 
 #[allow(dead_code)]
+#[cfg(not(tarpaulin_include))]
 pub fn add_two(a: i32) -> i32 {
     internal_adder(a, 2)
 }
@@ -27,8 +28,7 @@ fn internal_adder(a: i32, b: i32) -> i32 {
 mod tests {
     use super::*;
 
-    // #[cfg_attr(tarpaulin, ignore)] // ignore test
-
+    // #[cfg_attr(tarpaulin, ignore)] // ignore test from coverage
     #[test]
     fn test_internal_add() {
         assert_eq!(3, internal_adder(1, 2)); // can test private methods

@@ -25,9 +25,15 @@ jobs:
         uses: actions-rs/tarpaulin@v0.1
         with:
           version: '0.15.0'
-          args: '-- --test-threads 1'
+          args: '--ignore-tests tests/* -- --test-threads 1'
+          timeout: 30
       - name: Upload to codecov.io
         uses: codecov/codecov-action@v2
         with:
           # token: ${{secrets.CODECOV_TOKEN}} # not required for public repos
           fail_ci_if_error: true
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v1
+        with:
+          name: code-coverage-report
+          path: cobertura.xml
