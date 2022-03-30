@@ -93,4 +93,7 @@ Limitations, see [roadmap](https://github.com/xd009642/tarpaulin#roadmap):
   - Seems to offer branch coverage
   - Available [Github action](https://github.com/actions-rs/grcov)
 
-- [cargo-cov](https://github.com/kennytm/cov): abandoned project, no push since 2018, no release ever
+- [cargo-cov](https://github.com/kennytm/cov): abandoned project, no push since 2018, no release
+  ever
+
+- [kcov](https://github.com/kennytm/cargo-kcov): abandoned, last commit since 2019, last release in 2016
