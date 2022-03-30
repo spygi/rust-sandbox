@@ -38,7 +38,7 @@ jobs:
           name: code-coverage-report
           path: cobertura.xml
   build_test_grcov:
-    # if: ${{ false }}  # disable for now
+    if: ${{ false }}  # disable for now
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1

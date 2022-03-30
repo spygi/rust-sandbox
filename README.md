@@ -75,6 +75,8 @@ CI/CD integration: [Github action](https://github.com/marketplace/actions/rust-t
 [official Docker
 image](https://github.com/xd009642/tarpaulin#github-actions).
 
+![Tarpaulin](/docs/tarpaulin.jpg)
+
 [Features](https://github.com/xd009642/tarpaulin#features):  
 - Ignore specific methods from coverage with `#[cfg(not(tarpaulin_include))]`
 - Ignore test code (unit and integration) with `--ignore-tests` flag
@@ -108,7 +110,9 @@ Disadvantages:
   - Awkward syntax to ignore unit tests code (with regex e.g. `--excl-start '#\[cfg\(test'`) is not
     supported from GH action
     - Integration tests code can be ignored with `--ignore "tests/*"`
-  - Running on CI/CD is also slower compared to Tarpaulin (4-5 mins vs 2 mins e.g. on [this run](https://github.com/spygi/rust-sandbox/actions/runs/2064833924))
+  - Running on CI/CD is also slower compared to Tarpaulin (6 mins vs 3 mins e.g. on [this run](https://github.com/spygi/rust-sandbox/actions/runs/2065046903))
+
+![Grcov](/docs/grcov.jpg)
 
 - [cargo-cov](https://github.com/kennytm/cov): abandoned project, no push since 2018, no release
   ever
