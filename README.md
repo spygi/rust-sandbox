@@ -82,3 +82,14 @@ image](https://github.com/xd009642/tarpaulin#github-actions).
 Limitations, see [roadmap](https://github.com/xd009642/tarpaulin#roadmap):  
 - Only supports x86_64 processors running Linux
 - No branch and condition coverage
+
+## Alternatives:
+- [mozilla/grcov](https://github.com/mozilla/grcov#example-how-to-generate-gcda-files-for-a-rust-project):
+  Rust tool to collect and aggregate code coverage data for multiple source files (not just Rust)
+  - Installation requires besides Rust nightly a bunch of other flags set
+  - Produces lcov by default (which [Codecov
+    supports](https://docs.codecov.com/docs/supported-report-formats))
+  - Seems to offer branch coverage
+  - Available [Github action](https://github.com/actions-rs/grcov)
+
+- [cargo-cov](https://github.com/kennytm/cov): abandoned project, no push since 2018, no release ever
