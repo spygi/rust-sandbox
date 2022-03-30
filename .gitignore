@@ -1,1 +1,5 @@
 /target
+
+# related to code coverage
+codecov
+tarpaulin*
