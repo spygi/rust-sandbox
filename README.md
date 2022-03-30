@@ -16,13 +16,13 @@ Using dev containers in VS Code:
         "editor.defaultFormatter": "matklad.rust-analyzer"
     },
 ```
-Both should be installed locally (`rustup component list`) and could be invoked manually with `cargo clippy`
+Both should already be installed locally (`rustup component list`) and could be invoked manually with `cargo clippy`
 or `rustfmt file_name` respectively.
 
 # Testing
 - Tests (all types) are denoted with the `#[test]` attribute.
 - Run all tests with `cargo test`
-- By default cargo test captures output of successful tests, to show it use `cargo test --
+- By default cargo test "captures" output of successful tests and does not display it, to show it use `cargo test --
 --show-output` or `-- --nocapture`
 
 ## Unit tests
@@ -35,7 +35,7 @@ or `rustfmt file_name` respectively.
 
 ## Integration tests
 - Usually organized in a tests/ folder
-- By default they target library code (lib.rs), which can be access with `crate_name::method`
+- By default they target library code (lib.rs), which can be accessed in the test with `crate_name::method`
   - The default crate name is the name of the package.
   - If you want to test another (sub)component, it has to be referenced by the lib.rs e.g. `pub mod
     component_name;` and then it can be accessed from the integration tests with
