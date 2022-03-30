@@ -10,7 +10,7 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
+  build_test_tarpaulin:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -37,7 +37,8 @@ jobs:
         with:
           name: code-coverage-report
           path: cobertura.xml
-  lint:
+  build_test_grcov:
+    # if: ${{ false }}  # disable for now
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1

@@ -41,9 +41,9 @@ or `rustfmt file_name` respectively.
     component_name;` and then it can be accessed from the integration tests with
     `crate_name::component_name`
 - Each file in the tests/ folder is a different crate which means [multiple executables are created](https://mozilla.github.io/application-services/book/design/test-faster.html#appendix-how-to-avoid-redundant-compiles-for-benchmarks-and-integration-tests): one for each file.
-  - Instead organize them in directories with a main.rs -> these directories are discovered by
-    default. If you do this however and you do a cargo test it will run the tests twice.
-- In order to run only integration tests, create a test target [like
+  - Instead organize them in an integration directory with a main.rs -> these directories are
+    discovered by default.
+- In order to run *only* integration tests, create a test target [like
   here](https://joshleeb.com/blog/rust-integration-tests/) and use with `cargo test --test integration` 
 - Some pointers in creating a test harness [with setup and shutdown
   code](https://tjtelan.com/blog/rust-custom-test-harness/)
@@ -68,7 +68,7 @@ DevOps, Travis etc.
 
 # Test coverage
 ## Tarpaulin
-A cargo install tool / [Rust package](https://crates.io/crates/cargo-tarpaulin). Version 0.20, actively developed, 70 contributors, monthly releases.
+A [Rust package](https://crates.io/crates/cargo-tarpaulin): Version 0.20, actively developed, 70 contributors, monthly releases.
 Run locally with `cargo tarpaulin` 
 
 CI/CD integration: [Github action](https://github.com/marketplace/actions/rust-tarpaulin) or
@@ -86,12 +86,29 @@ Limitations, see [roadmap](https://github.com/xd009642/tarpaulin#roadmap):
 
 ## Alternatives:
 - [mozilla/grcov](https://github.com/mozilla/grcov#example-how-to-generate-gcda-files-for-a-rust-project):
-  Rust tool to collect and aggregate code coverage data for multiple source files (not just Rust)
-  - Installation requires besides Rust nightly a bunch of other flags set
-  - Produces lcov by default (which [Codecov
-    supports](https://docs.codecov.com/docs/supported-report-formats))
-  - Seems to offer branch coverage
-  - Available [Github action](https://github.com/actions-rs/grcov)
+  Rust tool to collect and aggregate code coverage data for different languages (not just Rust)
+  - Can produce lcov which can be fed in Codecov [Codecov
+    formats](https://docs.codecov.com/docs/supported-report-formats))
+  - Available [Github action](https://github.com/actions-rs/grcov) with some [limited configuration](https://github.com/actions-rs/grcov#config) available.
+  - [Using .procfraw
+    file](https://github.com/mozilla/grcov#example-how-to-generate-source-based-coverage-for-a-rust-project)
+    does not work for me locally with a linker error `error: linking with `cc` failed:`
+
+Advantages:
+
+  - Supported by Mozilla
+  - Can be used in other languages too
+  - Offers branch coverage - do we need it?
+
+Disadvantages:
+
+  - Requires nightly toolchain which can be incovenient (components like clippy installed in stable
+    would need to be installed again) as well as potentially unstable(?)
+  - Running locally requires 2 steps: cargo test (generates gcno and gcda files) and then grcov to interpret the coverage.
+  - Awkward syntax to ignore unit tests code (with regex e.g. `--excl-start '#\[cfg\(test'`) is not
+    supported from GH action
+    - Integration tests code can be ignored with `--ignore "tests/*"`
+  - Running on CI/CD is also slower compared to Tarpaulin (4-5 mins vs 2 mins e.g. on [this run](https://github.com/spygi/rust-sandbox/actions/runs/2064833924))
 
 - [cargo-cov](https://github.com/kennytm/cov): abandoned project, no push since 2018, no release
   ever
