@@ -2,4 +2,4 @@
 
 # related to code coverage
 codecov
-tarpaulin*
+tarpaulin-report.html
