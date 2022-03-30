@@ -77,7 +77,8 @@ image](https://github.com/xd009642/tarpaulin#github-actions).
 
 [Features](https://github.com/xd009642/tarpaulin#features):  
 - Ignore specific methods from coverage with `#[cfg(not(tarpaulin_include))]`
-- Ignore test code (unit and integration) `--ignore-tests` flag
+- Ignore test code (unit and integration) with `--ignore-tests` flag
+- Export to HTML with `cargo tarpaulin -o html`
 
 Limitations, see [roadmap](https://github.com/xd009642/tarpaulin#roadmap):  
 - Only supports x86_64 processors running Linux
