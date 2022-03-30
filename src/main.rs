@@ -6,7 +6,7 @@ fn main() {
     let a = rng.gen_range(0..10);
     let b = rng.gen_range(0..10);
 
-    rust_sandbox::main(a, b); // call the library, use rust_sandbox is not needed;
+    println!("{}", rust_sandbox::main(a, b)); // call the library, `use rust_sandbox` is not needed;
 }
 
 #[cfg(test)]
