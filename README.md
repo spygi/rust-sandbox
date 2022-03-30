@@ -104,8 +104,9 @@ Advantages:
 
 Disadvantages:
 
-  - Requires nightly toolchain which can be incovenient (components like clippy installed in stable
-    would need to be installed again) as well as potentially unstable(?)
+  - Requires nightly toolchain which can be unstable as well as incovenient (components like clippy
+    installed in stable would need to be installed again, rust-analyzer might need [additional
+    config](https://rust-analyzer.github.io/manual.html#toolchain) to use the stable toolchain)
   - Running locally requires 2 steps: cargo test (generates gcno and gcda files) and then grcov to interpret the coverage.
   - Awkward syntax to ignore unit tests code (with regex e.g. `--excl-start '#\[cfg\(test'`) is not
     supported from GH action

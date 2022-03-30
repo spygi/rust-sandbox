@@ -2,10 +2,8 @@
 mod util;
 
 pub fn add(a: i32, b: i32) -> i32 {
-    // if true {
-        println!("{}", util::pretty_print(a));
-        println!("{}", util::pretty_print(b));
-    // }
+    println!("{}", util::pretty_print(a));
+    println!("{}", util::pretty_print(b));
 
     let sum = private_add(a, b);
     println!("Sum of {} and {} is {}", a, b, sum);
