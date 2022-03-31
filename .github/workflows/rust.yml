@@ -19,6 +19,9 @@ jobs:
         with:
           toolchain: stable
           override: true
+          components: rustfmt, clippy
+      - run: cargo clippy
+      - run: rustfmt  
       - name: Build
         run: cargo build --verbose
       - name: Run cargo-tarpaulin
