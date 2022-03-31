@@ -10,14 +10,14 @@ Using dev containers in VS Code:
 - Debugging: VSLLDB VS Code extension
 - Code analysis: [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=matklad.rust-analyzer) extension
 - Linting (clippy) & formatting (rustfmt) on save
-```
+```json
 "editor.formatOnSave": true, 
-    "[rust]": { 
-        "editor.defaultFormatter": "matklad.rust-analyzer"
-    },
+"[rust]": { 
+    "editor.defaultFormatter": "matklad.rust-analyzer"
+},
 ```
 Both should already be installed locally (`rustup component list`) and could be invoked manually with `cargo clippy`
-or `rustfmt file_name` respectively.
+or `cargo fmt` respectively.
 
 # Testing
 - Tests (all types) are denoted with the `#[test]` attribute.
