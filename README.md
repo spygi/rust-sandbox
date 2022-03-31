@@ -25,13 +25,19 @@ or `cargo fmt` respectively.
 - By default cargo test "captures" output of successful tests and does not display it, to show it use `cargo test --
 --show-output` or `-- --nocapture`
 
+## Doc tests
+- The primary way of testing?
+- Creates a different crate/main() so you need to prefix your methods with `crate_name::`
+
 ## Unit tests
 - Usually in the same file as the code
 - Can access private methods with `use super::*;`
 - Use #[cfg(test)] to not have the compiled unless under test
 - Run only library tests: `cargo test --lib`
   - Also runs sub-component's tests
-- Run only binary tests (main.rs): `cargo test --bin rust_sandbox` where rust_sandbox is the name of the binary
+- Run only binary tests (main.rs): `cargo test --bin rust_sandbox` where rust_sandbox is the name of
+  the binary
+- Run only a specific test_file: `cargo test test_file`
 
 ## Integration tests
 - Usually organized in a tests/ folder
@@ -43,6 +49,7 @@ or `cargo fmt` respectively.
 - Each file in the tests/ folder is a different crate which means [multiple executables are created](https://mozilla.github.io/application-services/book/design/test-faster.html#appendix-how-to-avoid-redundant-compiles-for-benchmarks-and-integration-tests): one for each file.
   - Instead organize them in an integration directory with a main.rs -> these directories are
     discovered by default.
+  - You can still run tests selectively by the file name or test name.
 - In order to run *only* integration tests, create a test target [like
   here](https://joshleeb.com/blog/rust-integration-tests/) and use with `cargo test --test integration` 
 - Some pointers in creating a test harness [with setup and shutdown

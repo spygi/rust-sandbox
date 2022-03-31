@@ -1,6 +1,10 @@
 #[path = "../util/mod.rs"]
 mod util;
 
+/// ```
+/// let result = rust_sandbox::adder::add(-2, 3);
+/// assert_eq!(result, 1);
+/// ```
 pub fn add(a: i32, b: i32) -> i32 {
     println!("{}", util::pretty_print(a));
     println!("{}", util::pretty_print(b));
