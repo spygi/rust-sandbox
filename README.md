@@ -136,9 +136,12 @@ Limitations, see [roadmap](https://github.com/xd009642/tarpaulin#roadmap):
 - Only supports x86_64 processors running Linux
 - No branch and condition coverage
 
-## Alternatives:
-- [mozilla/grcov](https://github.com/mozilla/grcov#example-how-to-generate-gcda-files-for-a-rust-project):
-  Rust tool to collect and aggregate code coverage data for different languages (not just Rust).
+## Alternatives 
+
+### Grcov
+
+[mozilla/grcov](https://github.com/mozilla/grcov#example-how-to-generate-gcda-files-for-a-rust-project):
+Rust tool to collect and aggregate code coverage data for different languages (not just Rust).
   Total downloads: 330K, recent: 58K.
   - Can produce lcov which can be fed in Codecov [Codecov
     formats](https://docs.codecov.com/docs/supported-report-formats))
@@ -168,10 +171,11 @@ Disadvantages:
   run](https://github.com/spygi/rust-sandbox/actions/runs/2065046903))
   - Requires 2 steps: cargo test (generates gcno and gcda files) and then grcov to interpret the
   coverage.
+
+### Others
   
 - [cargo-cov](https://github.com/kennytm/cov): abandoned project, no push since 2018, no release
   ever
-
 - [kcov](https://github.com/kennytm/cargo-kcov): abandoned, last commit since 2019, last release in 2016
 
 # Documentation 
