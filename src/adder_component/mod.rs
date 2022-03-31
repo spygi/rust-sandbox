@@ -2,7 +2,7 @@
 mod util;
 
 /// ```
-/// let result = rust_sandbox::adder::add(-2, 3);
+/// let result = rust_sandbox::adder_component::add(-2, 3);
 /// assert_eq!(result, 1);
 /// ```
 pub fn add(a: i32, b: i32) -> i32 {
