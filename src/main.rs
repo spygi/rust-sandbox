@@ -14,7 +14,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_main() {
+    fn unit_main_test() {
         main();
     }
 }

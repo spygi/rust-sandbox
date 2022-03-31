@@ -1,17 +1,29 @@
 Sandbox rust project to test Rust tooling:
 
+- [Rust](#rust)
 - [Dev environment](#dev-environment)
 - [Testing](#testing)
 - [CI/CD](#cicd)
 - [Test Coverage](#test-coverage)
-- [Documentation]
+- [Documentation](#documentation)
+
+# Rust
+
+- Rustup: is the installer of Rust (and various components) and Cargo.
+  Supports different channels (stable, nightly, beta). Basic usage: `rustup default stable` or
+  `nightly` to switch from one toolchain to the other.
+- Cargo: package manager.
+  - If you want to use nightly one: `cargo +nightly ...` 
+- Rustc: the Rust compiler
+  - [Editions](https://doc.rust-lang.org/edition-guide/introduction.html)
 
 # Dev environment
-Using the default [Rust Dev container in VS
-Code](https://github.com/microsoft/vscode-dev-containers/tree/main/containers/rust)  
 
-- Debugging: uses vscode-lldb VS Code extension
-- Code analysis: uses [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=matklad.rust-analyzer) extension
+The default [Rust Dev container in VS
+Code](https://github.com/microsoft/vscode-dev-containers/tree/main/containers/rust) offers:
+
+- Debugging: using vscode-lldb VS Code extension
+- Code analysis: using [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=matklad.rust-analyzer) extension
 - Linting (clippy) & formatting (rustfmt) on save
 ```json
 "editor.formatOnSave": true, 
@@ -19,54 +31,68 @@ Code](https://github.com/microsoft/vscode-dev-containers/tree/main/containers/ru
     "editor.defaultFormatter": "matklad.rust-analyzer"
 },
 ```
-Both should already be installed locally (`rustup component list`) and could be invoked manually
-with `cargo clippy` or `cargo fmt` respectively.
+  - If not already installed (`rustup component list | grep installed`): `rustup component add
+    clippy rustfmt`
+  - Invoke directly with `cargo clippy` or `cargo fmt` respectively.
 
 # Testing
+
 - Tests (all types besides documentation tests) are denoted with the `#[test]` attribute.
-- `cargo test` runs unit, tests under folder tests/ and documentation tests
+- `cargo test` runs unit, tests under tests/ folder and documentation tests
 - By default cargo test "captures" output of successful tests and does not display it, to show it
 use `cargo test -- --show-output` or `-- --nocapture`
 
 ## Unit tests
+
 - Usually in the same file as the code
-- Can access private methods with `use super::*;`
-- Use #[cfg(test)] to not have the compiled unless under test
-- Run only library tests: `cargo test --lib`
-  - Also runs sub-component's tests
-- Run only binary tests (main.rs): `cargo test --bin rust_sandbox` where rust_sandbox is the name of
+  - If the files grow too much, tests can be split in other files e.g. "adder_component/tests" or
+    "another_component/tests.rs"
+- Can access private methods with `use super::*;` or fully qualifying names `crate_name::module_name`
+- Use #[cfg(test)] to not have them compiled, unless under test
+- Run only library tests (recursively): `cargo test --lib`
+- Run only binary tests (main.rs): `cargo test --bin rust_sandbox` where "rust_sandbox" is the name of
   the binary
-- Run only a specific test_file: `cargo test test_file`
+- Run only a specific test method: `cargo test part_of_the_test_method_name`
 
 ## Integration tests
-- Usually organized in a tests/ folder
+
+- Usually organized in a "tests/" folder
 - By default they target library code (lib.rs), which can be accessed in the test with `crate_name::method`
   - The default crate name is the name of the package.
   - If you want to test another (sub)component, it has to be referenced by the lib.rs e.g. `pub mod
-    component_name;` and then it can be accessed from the integration tests with
-    `crate_name::component_name`
+    module_name;` and then it can be accessed from the integration tests with
+    `crate_name::module_name`
 - Each file in the tests/ folder is a different crate which means [multiple executables are created](https://mozilla.github.io/application-services/book/design/test-faster.html#appendix-how-to-avoid-redundant-compiles-for-benchmarks-and-integration-tests): one for each file.
   - Instead organize them in an integration directory with a main.rs -> these directories are
     discovered by default.
+    - The downside is that we need to remember to add the test file in the tests/integration/main.rs.
   - You can still run tests selectively by the file name or test name.
+    - The file name is the name of the crate.
 - In order to run *only* integration tests, create a test target [like
-  here](https://joshleeb.com/blog/rust-integration-tests/) and use with `cargo test --test integration` 
+  shown here](https://joshleeb.com/blog/rust-integration-tests/) and use with `cargo test --test integration` 
 - Some pointers in creating a test harness [with setup and shutdown
   code](https://tjtelan.com/blog/rust-custom-test-harness/)
 
 ### E2E tests
-- E2E tests exercise the binary in Rust terms from the "outside".
-- [assert_cmd package](https://crates.io/crates/assert_cmd) can be used to discover the binary
+
+- E2E tests exercise the binary from the "outside" (similar to integration tests).
+- [assert_cmd package](https://crates.io/crates/assert_cmd) can be used to access the binary
 - See a usage in practice in [the bat
   repo](https://github.com/sharkdp/bat/blob/master/tests/integration_tests.rs)
 
 ## Doc tests
-- A different crate/main() is used so you need to prefix your methods with `crate_name::`
-  - Similar to how integration tests work
-- They are not part of test coverage in neither Tarpaulin nor Grcov (listed in [Test coverage section](#test-coverage))
+
+- They showcase how to use the code like regular docs but since they are runnable, they don't get out
+  of sync from the code. 
+- A different crate/main() is used, so you test the public API (similar to integration tests)
+  - You would need to prefix your methods with `crate_name::`
+- Run only doc tests with `cargo test --doc`
+- Unfortunately, doc tests do not contribute to the test coverage in neither Tarpaulin nor Grcov
+  (tools explained in [Test coverage section](#test-coverage))
 
 # CI/CD
-- Github Actions
+
+Github Actions
   - [Rust tools
     installed by default](https://github.com/actions/virtual-environments/blob/ubuntu20/20220227.1/images/linux/Ubuntu2004-Readme.md#rust-tools)
     on Ubuntu latest GitHub workers
@@ -78,13 +104,16 @@ use `cargo test -- --show-output` or `-- --nocapture`
 DevOps, Travis etc.  
 
 # Test coverage
-Some basic features that we would need here are
-- Ignore test code itself from coverage
+
+Some basic features that we would need are
+
+- Ignore test code itself from coverage so that the numbers are correct
 - Be able to ignore non-test code from coverage
-- Run locally and on CI/CD
-- Upload coverage report in a tool like Codecov
+- Run locally and inspect coverage
+- Run in CI/CD and upload coverage report in a tool like Codecov
 
 ## Tarpaulin
+
 A [Rust package](https://crates.io/crates/cargo-tarpaulin) to run tests and generate test coverage
 reports. Some statistic: version 0.20, actively developed (single maintainer mostly), 70
 contributors, monthly releases. Probably the most used coverage tool in the Rust community: total downloads: 378K, recent: 63K
@@ -124,7 +153,7 @@ Advantages:
 
 - Supported by Mozilla
 - Can be used in other languages too
-- Offers branch coverage - is it a nust-have?
+- Offers branch coverage - is it a must-have?
 
 Disadvantages:
 
@@ -144,3 +173,16 @@ Disadvantages:
   ever
 
 - [kcov](https://github.com/kennytm/cargo-kcov): abandoned, last commit since 2019, last release in 2016
+
+# Documentation 
+
+- `cargo doc` generates a navigatable documentation
+  - Copy locally "./targets/doc/" folder and open "./targets/doc/rust_sandbox/index.html"
+- The generated docs could be hosted in Github pages etc.
+
+# References
+
+- [Rust book](https://doc.rust-lang.org/book/)
+- [Rust by example](https://doc.rust-lang.org/rust-by-example/)
+- [Cargo book](https://doc.rust-lang.org/cargo/)
+- [Rustup book](https://rust-lang.github.io/rustup/index.html)

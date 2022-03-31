@@ -1,6 +1,12 @@
+// if we want to avoid paths here
+// we could import all modules on the lib with `pub mod util;`
+// and here `use super::util;`
 #[path = "../util/mod.rs"]
 mod util;
 
+/// This is a doc test.
+///
+/// # Examples
 /// ```
 /// let result = rust_sandbox::adder_component::add(-2, 3);
 /// assert_eq!(result, 1);
@@ -26,12 +32,15 @@ fn private_add(a: i32, b: i32) -> i32 {
 }
 
 #[cfg(test)] // gets compiled only when testing
+#[path = "./tests/more_unit_tests.rs"]
+mod more_unit_tests;
+
 mod tests {
-    use super::*;
 
     // #[cfg_attr(tarpaulin, ignore)] // ignore test from coverage
     #[test]
-    fn test_private_add() {
-        assert_eq!(3, private_add(1, 2)); // can test private methods
+    fn unit_private_add_test() {
+        // can test private methods this way or by `use super::*;`
+        assert_eq!(3, crate::adder_component::private_add(1, 2));
     }
 }
