@@ -1,7 +1,13 @@
 #[allow(dead_code)]
-fn another_function() {
+pub fn another_function() {
     super::another_util::another_util_fn();
-    println!("From another");
+    println!("From another public");
+}
+
+#[allow(dead_code)]
+fn another_private_function() {
+    crate::another_util::another_util_fn();
+    println!("From another private");
 }
 
 #[cfg(test)]

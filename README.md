@@ -7,6 +7,19 @@ Sandbox rust project to test Rust tooling:
 - [Test Coverage](#test-coverage)
 - [Documentation](#documentation)
 
+The main entry points are [main.rs](./src/main.rs) that is a thin wrapper around
+the [lib.rs](./src/lib.rs) that contains the actual functionality. The rest of
+the code is organised in 2 ways: 
+
+1. Components are split in different folders e.g.
+  [adder_component/](./src/adder_component/mod.rs) that is using
+  [util/](./src/util/mod.rs)
+1. Components reside at the top-level e.g.
+   [another_component.rs](./src/another_component.rs) that is using [another_util](./src/another_util.rs)
+
+Importing those components can be done centrally in the lib.rs (e.g. `pub mod another_util`) or via paths e.g.
+util component in [adder_component](./src/adder_component/mod.rs).
+
 # Rust
 
 - Rustup: is the installer of Rust (and various components) and Cargo.
@@ -44,19 +57,32 @@ use `cargo test -- --show-output` or `-- --nocapture`
 
 ## Unit tests
 
-- Usually in the same file as the code
-  - If the files grow too much, tests can be split in other files e.g. "adder_component/tests" or
-    "another_component/tests.rs"
+- Conventionally, unit tests are in the same file as the code, see e.g. [lib.rs](./src/lib.rs) or [adder_component/mod.rs](./src/adder_component/mod.rs)
+  - Tests can also be split in other files (if the files grow too much for example) e.g. see
+    [adder_component/tests/](./src/adder_component/tests/more_unit_tests.rs) or
+    [another_component/extra_tests.rs](./src/another_component/extra_tests.rs)
 - Can access private methods with `use super::*;` or fully qualifying names `crate_name::module_name`
-- Use #[cfg(test)] to not have them compiled, unless under test
+- Use `#[cfg(test)]` to have them compiled only under test
 - Run only library tests (recursively): `cargo test --lib`
 - Run only binary tests (main.rs): `cargo test --bin rust_sandbox` where "rust_sandbox" is the name of
   the binary
 - Run only a specific test method: `cargo test part_of_the_test_method_name`
 
+### Mocking libraries
+
+Here is a (very thorough) [list comparing different mocking
+libraries](https://asomers.github.io/mock_shootout/) in Rust. According to this
+list (which was compiled from the author of Mockall),
+[Mockall](https://crates.io/crates/mockall) is the clear winner in terms of
+features and ease-of-use. It runs on stable Rust and looking at the downloads,
+it looks also as the most popular with over 2M (the next one being
+[Mocktopus](https://crates.io/crates/mocktopus) with 75K). It is also the
+mocking library used in the [Tokio
+project](https://github.com/tokio-rs/tokio/blob/master/tokio-util/tests/framed_write.rs#L111) 
+
 ## Integration tests
 
-- Usually organized in a "tests/" folder
+- Usually organized in a [tests/](./tests) folder
 - By default they target library code (lib.rs), which can be accessed in the test with `crate_name::method`
   - The default crate name is the name of the package.
   - If you want to test another (sub)component, it has to be referenced by the lib.rs e.g. `pub mod
