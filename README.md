@@ -81,7 +81,8 @@ it looks also as the most popular with over 2M (the next one being
 mocking library used in the [Tokio
 project](https://github.com/tokio-rs/tokio/blob/master/tokio-util/tests/framed_write.rs#L111) 
 
-For an example usage of the Mockall library, see the "unit_test_mocking" test.
+For an example usage of the Mockall library, see the
+[unit_test_mocking](./src/adder_component/mod.rs#L49) test method.
 - Run with `cargo test unit_test_mocking -- --show-output` to see mocked results
   in the output.
 
