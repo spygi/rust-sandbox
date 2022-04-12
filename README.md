@@ -17,8 +17,9 @@ the code is organised in 2 ways:
 1. Components reside at the top-level e.g.
    [another_component.rs](./src/another_component.rs) that is using [another_util](./src/another_util.rs)
 
-Importing those components can be done centrally in the lib.rs (e.g. `pub mod another_util`) or via paths e.g.
-util component in [adder_component](./src/adder_component/mod.rs).
+Importing those components can be done centrally in the lib.rs (e.g. `pub mod
+another_util`) or via paths e.g. util component in
+[adder_component](./src/adder_component/mod.rs).
 
 # Rust
 
@@ -79,6 +80,10 @@ it looks also as the most popular with over 2M (the next one being
 [Mocktopus](https://crates.io/crates/mocktopus) with 75K). It is also the
 mocking library used in the [Tokio
 project](https://github.com/tokio-rs/tokio/blob/master/tokio-util/tests/framed_write.rs#L111) 
+
+For an example usage of the Mockall library, see the "unit_test_mocking" test.
+- Run with `cargo test unit_test_mocking -- --show-output` to see mocked results
+  in the output.
 
 ## Integration tests
 

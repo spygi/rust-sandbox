@@ -11,6 +11,7 @@ rand = "0.8.5"
 [dev-dependencies]
 cargo-tarpaulin = "0.20.0"
 assert_cmd = "2.0.4"
+mockall = "0.11.0"
 
 [[test]]
 name = "integration"
